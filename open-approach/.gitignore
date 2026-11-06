@@ -1,0 +1,17 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Course data (do not publish)
+training_data_Part2.csv
+*.db
+*_solutions.sql
+*_solutions.txt
+
+# Generated outputs that contain course data
+test_out.csv
+*_out.csv

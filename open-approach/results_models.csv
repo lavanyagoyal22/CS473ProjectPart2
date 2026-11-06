@@ -1,0 +1,5 @@
+,RMSE,MAE,Pearson,under,over
+ridge,17.703,13.949,0.566,99.6,74.4
+random forest,16.676,12.935,0.63,96.0,78.0
+blend 0.7 RF + 0.3 Ridge,16.594,12.881,0.637,97.4,76.6
+constant mean,21.464,16.413,,104.0,70.0
