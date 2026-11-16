@@ -1,0 +1,60 @@
+{
+  "models": {
+    "minilm": {
+      "repo_id": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "dimensions": 384,
+      "precompute": true,
+      "backend": "sentence_transformers",
+      "max_length": 512,
+      "batch_size": 16
+    },
+    "multiqa_minilm": {
+      "repo_id": "sentence-transformers/multi-qa-MiniLM-L6-cos-v1",
+      "revision": "40426cd4e19da3e57c3cbb97c61d76ffcc1dcb3c",
+      "dimensions": 384,
+      "precompute": false,
+      "backend": "sentence_transformers",
+      "max_length": 512,
+      "batch_size": 16
+    },
+    "e5_small": {
+      "repo_id": "intfloat/e5-small-v2",
+      "revision": "ffb93f3bd4047442299a41ebb6fa998a38507c52",
+      "dimensions": 384,
+      "precompute": false,
+      "backend": "sentence_transformers",
+      "max_length": 512,
+      "batch_size": 16,
+      "usage_note": "E5 recommends using its documented input prefixes consistently in training and inference."
+    },
+    "bge_small": {
+      "repo_id": "BAAI/bge-small-en-v1.5",
+      "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+      "dimensions": 384,
+      "precompute": false,
+      "backend": "sentence_transformers",
+      "max_length": 512,
+      "batch_size": 16
+    },
+    "jina_code": {
+      "repo_id": "jinaai/jina-embeddings-v2-base-code",
+      "revision": "516f4baf13dec4ddddda8631e019b5737c8bc250",
+      "dimensions": 768,
+      "precompute": true,
+      "backend": "onnx",
+      "onnx_file": "onnx/model_quantized.onnx",
+      "max_length": 2048,
+      "batch_size": 2,
+      "usage_note": "CPU ONNX encoder; masked mean pooling, L2 normalization and 2048-token truncation; use embedding_assets.load_encoder."
+    }
+  },
+  "cache_version": 2,
+  "precompute_fields": [
+    "q",
+    "r"
+  ],
+  "max_length": 512,
+  "batch_size": 16,
+  "threads": 4
+}

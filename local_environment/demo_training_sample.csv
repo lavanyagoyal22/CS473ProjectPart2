@@ -1,0 +1,148 @@
+﻿id,hw_num,question_number,question_prompt,q,r,manual_grade,manual_explanation,db_instance_path
+1,1,1,Count the number of orders placed on each day of the week. Display the order_dow and the number of orders placed on that day.,"
+	SELECT order_dow, SUM(order_id) as order_count FROM ""order"" NATURAL JOIN `order-product` WHERE order_dow IS NOT NULL GROUP BY order_dow ORDER BY order_dow;
+	","SELECT order_dow, COUNT(*) as order_count FROM ""order"" GROUP BY order_dow ORDER BY order_dow;",70,"SELECT = 5
+FROM = 25
+Group BY  = 50
+Extra JOIN = -10",./DB/instacart_stu.db
+2,1,1,Count the number of orders placed on each day of the week. Display the order_dow and the number of orders placed on that day.,"
+	select DISTINCT ""order_dow"", count(""order_number"") as ""order_count""
+	from ""order""
+	group by ""order_dow""
+	having order_count >12000","select DISTINCT ""order_dow"", count(""order_number"") as ""order_count"" from ""order"" group by ""order_dow""",80,"SELECT = 25
+FROM = 25
+GROUP BY = 50
+Extra Keyword = -10
+Extra Having Statement = -10",./DB/instacart_stu.db
+40,2,1,Find the product with the largest add_to_cart_order value.,"
+   SELECT p.product_id, 
+(SELECT op.order_id
+FROM ""order-product"" op
+ORDER BY add_to_cart_order DESC
+LIMIT 1
+) AS order_id , 
+
+(SELECT add_to_cart_order
+FROM ""order-product"" op
+ORDER BY add_to_cart_order DESC
+LIMIT 1
+) AS add_to_cart_order
+
+FROM ""product"" p
+WHERE p.product_id IN
+
+/* gets the highest add to cart order */
+(SELECT op.product_id
+FROM ""order-product"" op
+ORDER BY add_to_cart_order DESC
+LIMIT 1)
+
+
+	","SELECT p.product_id, p.product_name,
+(SELECT op.order_id FROM ""order-product"" op WHERE op.product_id=p.product_id ORDER BY add_to_cart_order DESC LIMIT 1) AS order_id,
+(SELECT add_to_cart_order FROM ""order-product"" op WHERE op.product_id=p.product_id ORDER BY add_to_cart_order DESC LIMIT 1) AS add_to_cart_order
+FROM ""product"" p
+WHERE p.product_id IN (SELECT op.product_id FROM ""order-product"" op WHERE add_to_cart_order = (SELECT MAX(add_to_cart_order) FROM ""order-product""))",87.5,"OQ SELECT = 7.5
+OQ JOIN = 10
+OQ WHERE = 20
+IQ SELECT = 40
+IQ JOIN = 20
+Unnecessary Complexity = -10%",./DB/instacart_stu.db
+41,2,1,Find the product with the largest add_to_cart_order value.,"
+  select product.aisle_id, product.product_id, product.product_name, ""order-product"".order_id, max(""order-product"".add_to_cart_order) as add_to_cart_order
+  FROM product JOIN ""order-product"" ON product.product_id=""order-product"".product_id;
+	","SELECT product.product_id, product.product_name, ""order-product"".order_id, ""order-product"".add_to_cart_order
+FROM product JOIN ""order-product"" ON product.product_id=""order-product"".product_id
+WHERE ""order-product"".add_to_cart_order = (SELECT MAX(add_to_cart_order) FROM ""order-product"");",95,"OQ SELECT = 7.5
+OQ JOIN = 10
+OQ WHERE = 20
+IQ SELECT = 40
+IQ JOIN = 20
+Extra SELECT column/field = -5%",./DB/instacart_stu.db
+84,3,1,List the languages spoken by agents located in Paris. Remove duplicates in your result.,"SELECT l.language
+FROM agent a
+JOIN languagerel lr ON a.agent_id = lr.agent_id
+JOIN language l ON lr.agent_id = l.lang_id
+WHERE a.city = 'Paris';","SELECT DISTINCT l.language
+FROM agent a
+JOIN languagerel lr ON a.agent_id = lr.agent_id
+JOIN language l ON lr.lang_id = l.lang_id
+WHERE a.city = 'Paris';",70,"SELECT: 10/30
+JOIN: 30/40
+WHERE: 30/30
+Total: 70/100
+Reason: 
+did not use DISTINCT keyword - 20
+Incorrect join condition: lr.agent_id = l.lang_id should be lr.lang_id = l.lang_id -10",./DB/spy.db
+85,3,1,List the languages spoken by agents located in Paris. Remove duplicates in your result.,"SELECT language
+FROM agent
+NATURAL JOIN languagerel
+NATURAL JOIN language
+WHERE city = 'Paris' AND language IS NOT NULL;","SELECT DISTINCT language
+FROM agent
+NATURAL JOIN languagerel
+NATURAL JOIN language
+WHERE city = 'Paris' AND language IS NOT NULL;",70,"SELECT = 10/30
+JOIN = 40/40
+WHERE = 30/30
+Reason: 
+Missing DISTINCT (from Specific Rubric - SELECT component): -20
+Extra WHERE predicate (from General Guidelines - Rule 4). The predicate ""language IS NOT NULL"" is unnecessary: -10 
+",./DB/spy.db
+131,4,1,Find the agent(s) with the highest and the lowest salary. ,"SELECT
+agent_id,
+first,
+last,
+salary
+FROM
+agent
+WHERE
+salary = (
+SELECT
+MAX(salary)
+FROM
+agent
+)
+AND salary = (
+SELECT
+MIN(salary)
+FROM
+agent
+);","SELECT
+agent_id,
+first,
+last,
+salary
+FROM
+agent
+WHERE
+salary = (
+SELECT
+MAX(salary)
+FROM
+agent
+)
+OR salary = (
+SELECT
+MIN(salary)
+FROM
+agent
+);",95,Incorrect logical operator connecting predicates (AND instead of OR) — General Guidelines Rule #11: -5%.,./DB/spy.db
+132,4,1,Find the agent(s) with the highest and the lowest salary. ,"SELECT t1.agent_id, t1.first, t1.last
+ FROM (
+     SELECT a.agent_id, a.first, a.last, a.salary, 
+         MAX(a.salary) OVER () AS MaxSalary, 
+            MIN(a.salary) OVER () AS MinSalary
+     FROM agent a
+     WHERE a.salary IS NOT NULL
+ ) AS t1
+ WHERE t1.salary = t1.MaxSalary OR t1.salary = t1.MinSalary;","SELECT t1.agent_id, t1.first, t1.last, t1.salary
+ FROM (
+     SELECT a.agent_id, a.first, a.last, a.salary, 
+         MAX(a.salary) OVER () AS MaxSalary, 
+            MIN(a.salary) OVER () AS MinSalary
+     FROM agent a
+     WHERE a.salary IS NOT NULL
+ ) AS t1
+ WHERE t1.salary = t1.MaxSalary OR t1.salary = t1.MinSalary;",80,"remove one column from select -10
+Extra Where predicate = -10",./DB/spy.db
