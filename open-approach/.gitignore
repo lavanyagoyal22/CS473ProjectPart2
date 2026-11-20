@@ -15,3 +15,9 @@ training_data_Part2.csv
 # Generated outputs that contain course data
 test_out.csv
 *_out.csv
+
+# Part 2 environment
+.part2-venv/
+.part2-validation/
+local_assets/
+*.zip
