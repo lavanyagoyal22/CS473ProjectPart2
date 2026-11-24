@@ -1,4 +1,4 @@
-"""Train / tune / save Approach 2 (text edit distance).  Run LOCALLY, never in the grader.
+"""Train / tune / save Approach 2 (text edit distance).
 
     python train_approach2.py --csv training_data_Part2.csv
 
