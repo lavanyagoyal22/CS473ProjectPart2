@@ -15,11 +15,12 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import RidgeCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
+from sklearn.ensemble import ExtraTreesRegressor
 
 CSV = "training_data_Part2.csv"; SEED = 42; W_RF = 0.7; SHIFT = 0.0
 OUT = Path(__file__).resolve().parent / "submission" / "weights" / "approach6.joblib"
 
-def make_rf(): return RandomForestRegressor(300, min_samples_leaf=5, max_features=0.4, random_state=SEED, n_jobs=1)
+def make_rf(): return ExtraTreesRegressor(500, min_samples_leaf=4, max_features=0.5, random_state=0, n_jobs=1)
 def make_ridge(): return make_pipeline(StandardScaler(), RidgeCV(np.logspace(-1, 4, 25)))
 
 def metrics(y, p):
