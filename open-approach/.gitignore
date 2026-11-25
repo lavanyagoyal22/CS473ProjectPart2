@@ -22,3 +22,8 @@ test_out.csv
 local_assets/
 *.zip
 *.zip
+
+# LLM experiment (key + data-derived outputs)
+credentials.py
+genai_wrapper.py
+llm_scores_*.csv
